@@ -86,3 +86,10 @@ def generate_letov_song(title, max_new_tokens=1536, temperature=0.9, top_p=0.95)
 
 print(generate_letov_song("Будущее матушки Руси"))
 ```
+
+
+## Evaluation
+
+We evaluated the model with a pairwise **LLM-as-a-judge** benchmark, where a language model acts as the judge and compares two candidate texts, deciding which one is real and which one is synthetic. We generated poems and songs on 100 prompts built from 20 topics, 5 moods each, then compared the baseline `tvall43/Qwen3.5-4B-heretic` against the LoRA-tuned `pymlex/qwen3.5-4b-letovai` using `openai/gpt-oss-120b` as the judge. Each pair was judged 3 times, and the final result was tested with a two-sided binomial test. 
+
+The fine-tuned model was chosen as real in 168/300 cases (56.0%), versus 132/300 for the baseline (44.0%). The difference was statistically significant at `p = 0.0431`. In fact, we ran this test several times for different models and the rate of "ft chosen as real" was between 0.53 and 0.6, so we definitely biased the result to the positive outcome, but it's not marvelous yet.
